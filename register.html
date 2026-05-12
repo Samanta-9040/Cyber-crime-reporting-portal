@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Register — CyberSafe India{% endblock %}
+{% block content %}
+<section class="auth-section">
+    <div class="auth-card" id="register-card">
+        <div class="auth-header">
+            <div class="auth-icon"><i class="fas fa-user-plus"></i></div>
+            <h2>Create Account</h2>
+            <p>Register to report cyber crimes securely</p>
+        </div>
+        <form method="POST" action="{{ url_for('register') }}" id="register-form">
+            <div class="form-group">
+                <label for="reg-name"><i class="fas fa-user"></i> Full Name</label>
+                <input type="text" id="reg-name" name="name" placeholder="Enter your full name" required>
+            </div>
+            <div class="form-group">
+                <label for="reg-email"><i class="fas fa-envelope"></i> Email</label>
+                <input type="email" id="reg-email" name="email" placeholder="Enter your email" required>
+            </div>
+            <div class="form-group">
+                <label for="reg-phone"><i class="fas fa-phone"></i> Phone</label>
+                <input type="tel" id="reg-phone" name="phone" placeholder="+91 XXXXX XXXXX" required>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="reg-password"><i class="fas fa-lock"></i> Password</label>
+                    <input type="password" id="reg-password" name="password" placeholder="Min 6 characters" required minlength="6">
+                </div>
+                <div class="form-group">
+                    <label for="reg-confirm"><i class="fas fa-lock"></i> Confirm</label>
+                    <input type="password" id="reg-confirm" name="confirm_password" placeholder="Confirm password" required>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary btn-full" id="register-submit">
+                <i class="fas fa-user-plus"></i> Create Account
+            </button>
+        </form>
+        <div class="auth-footer">
+            <p>Already have an account? <a href="{{ url_for('login') }}">Login here</a></p>
+        </div>
+    </div>
+</section>
+{% endblock %}
