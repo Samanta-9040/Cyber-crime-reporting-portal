@@ -1,0 +1,363 @@
+{% extends "base.html" %}
+{% block title %}CyberSafe India — National Cyber Crime Reporting Portal{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero" id="hero-section">
+    <div class="hero-content">
+        <div class="hero-badge" id="hero-badge">
+            <i class="fas fa-lock"></i>
+            <span>Secure & Confidential</span>
+        </div>
+        <h1 class="hero-title" id="hero-title">
+            Report Cyber Crime<br>
+            <span class="gradient-text">Protect Digital India</span>
+        </h1>
+        <p class="hero-subtitle" id="hero-subtitle">
+            India's trusted platform for reporting cyber crimes. Your identity is protected.
+            Fast-track resolution with AI-powered investigation support.
+        </p>
+        <div class="hero-actions" id="hero-actions">
+            {% if current_user.is_authenticated %}
+                <a href="{{ url_for('file_complaint') }}" class="btn btn-primary btn-lg" id="hero-report-btn">
+                    <i class="fas fa-file-alt"></i> File a Complaint
+                </a>
+            {% else %}
+                <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg" id="hero-report-btn">
+                    <i class="fas fa-file-alt"></i> Report Now
+                </a>
+            {% endif %}
+            <a href="{{ url_for('track_case') }}" class="btn btn-outline btn-lg" id="hero-track-btn">
+                <i class="fas fa-search"></i> Track Your Case
+            </a>
+        </div>
+        <div class="hero-trust" id="hero-trust">
+            <div class="trust-item">
+                <i class="fas fa-shield-alt"></i>
+                <span>256-bit Encryption</span>
+            </div>
+            <div class="trust-item">
+                <i class="fas fa-user-secret"></i>
+                <span>Anonymous Reporting</span>
+            </div>
+            <div class="trust-item">
+                <i class="fas fa-clock"></i>
+                <span>24/7 Support</span>
+            </div>
+        </div>
+    </div>
+    <div class="hero-visual" id="hero-visual">
+        <div class="cyber-shield">
+            <div class="shield-ring ring-1"></div>
+            <div class="shield-ring ring-2"></div>
+            <div class="shield-ring ring-3"></div>
+            <div class="shield-icon">
+                <i class="fas fa-shield-halved"></i>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Live Statistics -->
+<section class="stats-section" id="stats-section">
+    <div class="stats-container">
+        <div class="stat-card" id="stat-reports">
+            <div class="stat-icon"><i class="fas fa-file-alt"></i></div>
+            <div class="stat-content">
+                <span class="stat-number" data-target="{{ stats.total_reports if stats else 15234 }}">0</span>
+                <span class="stat-label">Reports Filed</span>
+            </div>
+        </div>
+        <div class="stat-card" id="stat-recovered">
+            <div class="stat-icon"><i class="fas fa-indian-rupee-sign"></i></div>
+            <div class="stat-content">
+                <span class="stat-number" data-target="{{ ((stats.amount_recovered if stats else 2847500000) / 10000000)|round(1) }}">0</span>
+                <span class="stat-suffix">Cr</span>
+                <span class="stat-label">Amount Recovered</span>
+            </div>
+        </div>
+        <div class="stat-card" id="stat-resolution">
+            <div class="stat-icon"><i class="fas fa-chart-line"></i></div>
+            <div class="stat-content">
+                <span class="stat-number" data-target="{{ stats.resolution_rate if stats else 78.5 }}">0</span>
+                <span class="stat-suffix">%</span>
+                <span class="stat-label">Resolution Rate</span>
+            </div>
+        </div>
+        <div class="stat-card" id="stat-response">
+            <div class="stat-icon"><i class="fas fa-bolt"></i></div>
+            <div class="stat-content">
+                <span class="stat-number" data-target="4.2">0</span>
+                <span class="stat-suffix">hrs</span>
+                <span class="stat-label">Avg Response Time</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Crime Categories -->
+<section class="categories-section" id="categories-section">
+    <div class="section-header">
+        <span class="section-tag"><i class="fas fa-th-large"></i> Crime Categories</span>
+        <h2 class="section-title">What Would You Like to Report?</h2>
+        <p class="section-desc">Select the type of cyber crime to get guidance and file your complaint</p>
+    </div>
+    <div class="categories-grid">
+        <a href="{{ url_for('awareness') }}#financial" class="category-card" id="cat-financial">
+            <div class="cat-icon-wrap">
+                <div class="cat-icon" style="--cat-color: #f59e0b; --cat-glow: rgba(245,158,11,0.3)">
+                    <i class="fas fa-money-bill-wave"></i>
+                </div>
+            </div>
+            <h3>Financial Fraud</h3>
+            <p>UPI fraud, credit card scams, banking fraud, investment schemes</p>
+            <div class="cat-stats">
+                <span><i class="fas fa-chart-bar"></i> 4,521 cases</span>
+            </div>
+            <div class="cat-arrow"><i class="fas fa-arrow-right"></i></div>
+        </a>
+
+        <a href="{{ url_for('awareness') }}#cyberbullying" class="category-card" id="cat-bullying">
+            <div class="cat-icon-wrap">
+                <div class="cat-icon" style="--cat-color: #ef4444; --cat-glow: rgba(239,68,68,0.3)">
+                    <i class="fas fa-comment-slash"></i>
+                </div>
+            </div>
+            <h3>Cyber Bullying</h3>
+            <p>Online harassment, threats, trolling, defamation, morphing</p>
+            <div class="cat-stats">
+                <span><i class="fas fa-chart-bar"></i> 2,187 cases</span>
+            </div>
+            <div class="cat-arrow"><i class="fas fa-arrow-right"></i></div>
+        </a>
+
+        <a href="{{ url_for('awareness') }}#hacking" class="category-card" id="cat-hacking">
+            <div class="cat-icon-wrap">
+                <div class="cat-icon" style="--cat-color: #8b5cf6; --cat-glow: rgba(139,92,246,0.3)">
+                    <i class="fas fa-user-ninja"></i>
+                </div>
+            </div>
+            <h3>Hacking</h3>
+            <p>Account hacking, data theft, ransomware, unauthorized access</p>
+            <div class="cat-stats">
+                <span><i class="fas fa-chart-bar"></i> 1,893 cases</span>
+            </div>
+            <div class="cat-arrow"><i class="fas fa-arrow-right"></i></div>
+        </a>
+
+        <a href="{{ url_for('awareness') }}#socialmedia" class="category-card" id="cat-social">
+            <div class="cat-icon-wrap">
+                <div class="cat-icon" style="--cat-color: #06b6d4; --cat-glow: rgba(6,182,212,0.3)">
+                    <i class="fas fa-share-nodes"></i>
+                </div>
+            </div>
+            <h3>Social Media</h3>
+            <p>Fake profiles, identity theft, impersonation, sextortion</p>
+            <div class="cat-stats">
+                <span><i class="fas fa-chart-bar"></i> 3,245 cases</span>
+            </div>
+            <div class="cat-arrow"><i class="fas fa-arrow-right"></i></div>
+        </a>
+
+        <a href="{{ url_for('awareness') }}#phishing" class="category-card" id="cat-phishing">
+            <div class="cat-icon-wrap">
+                <div class="cat-icon" style="--cat-color: #10b981; --cat-glow: rgba(16,185,129,0.3)">
+                    <i class="fas fa-fish"></i>
+                </div>
+            </div>
+            <h3>Phishing</h3>
+            <p>Fake emails, SMS scams, fraudulent websites, OTP theft</p>
+            <div class="cat-stats">
+                <span><i class="fas fa-chart-bar"></i> 2,876 cases</span>
+            </div>
+            <div class="cat-arrow"><i class="fas fa-arrow-right"></i></div>
+        </a>
+
+        <a href="{{ url_for('awareness') }}#childsafety" class="category-card" id="cat-child">
+            <div class="cat-icon-wrap">
+                <div class="cat-icon" style="--cat-color: #ec4899; --cat-glow: rgba(236,72,153,0.3)">
+                    <i class="fas fa-child"></i>
+                </div>
+            </div>
+            <h3>Child Safety</h3>
+            <p>CSAM, online predators, child exploitation, grooming</p>
+            <div class="cat-stats">
+                <span><i class="fas fa-chart-bar"></i> 512 cases</span>
+            </div>
+            <div class="cat-arrow"><i class="fas fa-arrow-right"></i></div>
+        </a>
+    </div>
+</section>
+
+<!-- Quick Complaint Form -->
+<section class="form-section" id="form-section">
+    <div class="form-container">
+        <div class="form-info">
+            <span class="section-tag"><i class="fas fa-pen-to-square"></i> Quick Report</span>
+            <h2 class="section-title">File a Complaint</h2>
+            <p class="section-desc">Provide basic details to register your complaint. Our team will follow up within 4 hours.</p>
+
+            <div class="form-features">
+                <div class="form-feature">
+                    <div class="ff-icon"><i class="fas fa-lock"></i></div>
+                    <div>
+                        <strong>End-to-End Encrypted</strong>
+                        <p>Your data is protected with military-grade encryption</p>
+                    </div>
+                </div>
+                <div class="form-feature">
+                    <div class="ff-icon"><i class="fas fa-clock"></i></div>
+                    <div>
+                        <strong>Quick Response</strong>
+                        <p>Average response time of 4.2 hours</p>
+                    </div>
+                </div>
+                <div class="form-feature">
+                    <div class="ff-icon"><i class="fas fa-user-shield"></i></div>
+                    <div>
+                        <strong>Identity Protected</strong>
+                        <p>Your personal information remains confidential</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-card" id="quick-form-card">
+            {% if current_user.is_authenticated %}
+            <form action="{{ url_for('file_complaint') }}" method="POST" enctype="multipart/form-data" id="quick-complaint-form">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() if csrf_token is defined else '' }}">
+                <div class="form-group">
+                    <label for="qf-name"><i class="fas fa-user"></i> Full Name</label>
+                    <input type="text" id="qf-name" name="name" placeholder="Enter your full name" required value="{{ current_user.name }}">
+                </div>
+                <div class="form-group">
+                    <label for="qf-mobile"><i class="fas fa-phone"></i> Mobile Number</label>
+                    <input type="tel" id="qf-mobile" name="mobile" placeholder="+91 XXXXX XXXXX" required value="{{ current_user.phone }}">
+                </div>
+                <div class="form-group">
+                    <label for="qf-category"><i class="fas fa-tag"></i> Crime Category</label>
+                    <select id="qf-category" name="category" required>
+                        <option value="">Select Category</option>
+                        <option value="Financial Fraud">Financial Fraud</option>
+                        <option value="Cyber Bullying">Cyber Bullying</option>
+                        <option value="Hacking">Hacking</option>
+                        <option value="Social Media">Social Media Crime</option>
+                        <option value="Phishing">Phishing</option>
+                        <option value="Child Safety">Child Safety</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="qf-desc"><i class="fas fa-align-left"></i> Description</label>
+                    <textarea id="qf-desc" name="description" rows="4" placeholder="Describe the incident in detail..." required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary btn-full" id="qf-submit">
+                    <i class="fas fa-paper-plane"></i> Submit Complaint
+                </button>
+            </form>
+            {% else %}
+            <div class="form-login-prompt">
+                <div class="prompt-icon"><i class="fas fa-lock"></i></div>
+                <h3>Login Required</h3>
+                <p>Please login or register to file a complaint. Your identity will be kept confidential.</p>
+                <div class="prompt-actions">
+                    <a href="{{ url_for('login') }}" class="btn btn-primary" id="form-login-btn"><i class="fas fa-sign-in-alt"></i> Login</a>
+                    <a href="{{ url_for('register') }}" class="btn btn-outline" id="form-register-btn"><i class="fas fa-user-plus"></i> Register</a>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<!-- Recent Cases -->
+<section class="cases-section" id="cases-section">
+    <div class="section-header">
+        <span class="section-tag"><i class="fas fa-list-check"></i> Case Tracker</span>
+        <h2 class="section-title">Recent Case Status</h2>
+        <p class="section-desc">Track the progress of recently filed complaints</p>
+    </div>
+    <div class="cases-grid">
+        {% if recent_cases %}
+            {% for case in recent_cases %}
+            <div class="case-card" id="case-{{ case.case_id }}">
+                <div class="case-header">
+                    <span class="case-id"><i class="fas fa-hashtag"></i> {{ case.case_id }}</span>
+                    <span class="case-badge badge-{{ case.status|lower|replace(' ', '-') }}">
+                        {{ case.status }}
+                    </span>
+                </div>
+                <div class="case-body">
+                    <div class="case-category">
+                        <i class="fas fa-tag"></i> {{ case.category }}
+                    </div>
+                    <p class="case-desc">{{ case.description[:100] }}{% if case.description|length > 100 %}...{% endif %}</p>
+                </div>
+                <div class="case-footer">
+                    <span class="case-date"><i class="fas fa-calendar"></i> {{ case.created_at.strftime('%d %b %Y') }}</span>
+                    <span class="case-priority priority-{{ case.priority|lower }}">
+                        <i class="fas fa-flag"></i> {{ case.priority }}
+                    </span>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="no-cases">
+                <i class="fas fa-folder-open"></i>
+                <p>No recent cases to display</p>
+            </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Live Alert Ticker -->
+<section class="alert-ticker" id="alert-ticker">
+    <div class="ticker-label">
+        <i class="fas fa-broadcast-tower pulse-icon"></i>
+        <span>LIVE ALERTS</span>
+    </div>
+    <div class="ticker-wrapper">
+        <div class="ticker-content" id="ticker-content">
+            {% for alert in alerts %}
+                <span class="ticker-item ticker-{{ alert.alert_type }}">{{ alert.message }}</span>
+                <span class="ticker-divider">•</span>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Animate stat counters
+    document.addEventListener('DOMContentLoaded', () => {
+        const counters = document.querySelectorAll('.stat-number');
+        const observerOptions = { threshold: 0.5 };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const counter = entry.target;
+                    const target = parseFloat(counter.dataset.target);
+                    const isDecimal = target % 1 !== 0;
+                    const duration = 2000;
+                    const startTime = performance.now();
+
+                    function updateCounter(currentTime) {
+                        const elapsed = currentTime - startTime;
+                        const progress = Math.min(elapsed / duration, 1);
+                        const eased = 1 - Math.pow(1 - progress, 3);
+                        const current = eased * target;
+                        counter.textContent = isDecimal ? current.toFixed(1) : Math.floor(current).toLocaleString('en-IN');
+                        if (progress < 1) requestAnimationFrame(updateCounter);
+                    }
+                    requestAnimationFrame(updateCounter);
+                    observer.unobserve(counter);
+                }
+            });
+        }, observerOptions);
+
+        counters.forEach(c => observer.observe(c));
+    });
+</script>
+{% endblock %}
