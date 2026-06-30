@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard — CyberSafe India{% endblock %}
+{% block content %}
+<section class="page-section">
+    <div class="page-header">
+        <span class="section-tag"><i class="fas fa-user-shield"></i> Admin Panel</span>
+        <h2 class="section-title">Officer Dashboard</h2>
+    </div>
+    <div class="admin-stats-grid" id="admin-stats">
+        <div class="admin-stat-card"><div class="admin-stat-icon" style="background:linear-gradient(135deg,#6366f1,#8b5cf6)"><i class="fas fa-file-alt"></i></div><div class="admin-stat-info"><span class="admin-stat-num">{{ total }}</span><span>Total Cases</span></div></div>
+        <div class="admin-stat-card"><div class="admin-stat-icon" style="background:linear-gradient(135deg,#f59e0b,#f97316)"><i class="fas fa-clock"></i></div><div class="admin-stat-info"><span class="admin-stat-num">{{ pending }}</span><span>Pending</span></div></div>
+        <div class="admin-stat-card"><div class="admin-stat-icon" style="background:linear-gradient(135deg,#06b6d4,#0ea5e9)"><i class="fas fa-search"></i></div><div class="admin-stat-info"><span class="admin-stat-num">{{ investigating }}</span><span>Investigating</span></div></div>
+        <div class="admin-stat-card"><div class="admin-stat-icon" style="background:linear-gradient(135deg,#10b981,#22c55e)"><i class="fas fa-check-circle"></i></div><div class="admin-stat-info"><span class="admin-stat-num">{{ resolved }}</span><span>Resolved</span></div></div>
+    </div>
+    <div class="admin-table-wrap" id="admin-cases-table">
+        <h3><i class="fas fa-list"></i> All Cases</h3>
+        <table class="admin-table">
+            <thead><tr><th>Case ID</th><th>Name</th><th>Category</th><th>Status</th><th>Priority</th><th>Date</th><th>Actions</th></tr></thead>
+            <tbody>
+            {% for c in recent %}
+            <tr>
+                <td><strong>{{ c.case_id }}</strong></td>
+                <td>{{ c.name }}</td>
+                <td>{{ c.category }}</td>
+                <td><span class="case-badge badge-{{ c.status|lower|replace(' ', '-') }}">{{ c.status }}</span></td>
+                <td><span class="priority-{{ c.priority|lower }}">{{ c.priority }}</span></td>
+                <td>{{ c.created_at.strftime('%d %b %Y') }}</td>
+                <td>
+                    <button class="btn btn-sm btn-primary" onclick="openUpdateModal({{ c.id }}, '{{ c.case_id }}', '{{ c.status }}', '{{ c.priority }}', '{{ c.officer_notes or '' }}', {{ c.amount_recovered }})">Update</button>
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<!-- Update Modal -->
+<div class="modal-overlay" id="update-modal" style="display:none">
+    <div class="modal-card">
+        <div class="modal-header"><h3><i class="fas fa-edit"></i> Update Case</h3><button onclick="closeModal()" class="modal-close">&times;</button></div>
+        <form method="POST" id="update-form">
+            <div class="form-group"><label>Status</label>
+                <select name="status" id="modal-status"><option value="Submitted">Submitted</option><option value="Under Review">Under Review</option><option value="Investigating">Investigating</option><option value="Resolved">Resolved</option><option value="Closed">Closed</option></select></div>
+            <div class="form-group"><label>Priority</label>
+                <select name="priority" id="modal-priority"><option value="Low">Low</option><option value="Medium">Medium</option><option value="High">High</option><option value="Critical">Critical</option></select></div>
+            <div class="form-group"><label>Amount Recovered (₹)</label><input type="number" name="amount_recovered" id="modal-recovered" min="0"></div>
+            <div class="form-group"><label>Officer Notes</label><textarea name="notes" id="modal-notes" rows="3"></textarea></div>
+            <button type="submit" class="btn btn-primary btn-full">Save Changes</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+function openUpdateModal(id, caseId, status, priority, notes, recovered) {
+    document.getElementById('update-modal').style.display = 'flex';
+    document.getElementById('update-form').action = `/admin/update_case/${id}`;
+    document.getElementById('modal-status').value = status;
+    document.getElementById('modal-priority').value = priority;
+    document.getElementById('modal-notes').value = notes;
+    document.getElementById('modal-recovered').value = recovered;
+}
+function closeModal() { document.getElementById('update-modal').style.display = 'none'; }
+document.getElementById('update-modal').addEventListener('click', function(e) { if (e.target === this) closeModal(); });
+</script>
+{% endblock %}

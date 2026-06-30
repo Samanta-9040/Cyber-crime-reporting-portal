@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block title %}Track Case — CyberSafe India{% endblock %}
+{% block content %}
+<section class="page-section">
+    <div class="page-header">
+        <span class="section-tag"><i class="fas fa-search"></i> Case Tracker</span>
+        <h2 class="section-title">Track Your Case</h2>
+        <p class="section-desc">Enter your Case ID to check the current status</p>
+    </div>
+    <div class="track-container" id="track-container">
+        <form class="track-form" id="track-form" onsubmit="trackCase(event)">
+            <div class="track-input-group">
+                <i class="fas fa-hashtag"></i>
+                <input type="text" id="track-input" placeholder="Enter Case ID (e.g., CYBER-2026-1001)" value="{{ case_id }}" required>
+                <button type="submit" class="btn btn-primary" id="track-submit"><i class="fas fa-search"></i> Track</button>
+            </div>
+        </form>
+
+        {% if complaint %}
+        <div class="track-result" id="track-result">
+            <div class="track-card">
+                <div class="track-header">
+                    <div>
+                        <h3><i class="fas fa-hashtag"></i> {{ complaint.case_id }}</h3>
+                        <span class="case-category-tag"><i class="fas fa-tag"></i> {{ complaint.category }}</span>
+                    </div>
+                    <span class="case-badge badge-{{ complaint.status|lower|replace(' ', '-') }}">{{ complaint.status }}</span>
+                </div>
+                <div class="track-timeline">
+                    <div class="timeline-step {% if complaint.status in ['Submitted','Under Review','Investigating','Resolved','Closed'] %}active{% endif %}">
+                        <div class="step-dot"></div>
+                        <span>Submitted</span>
+                    </div>
+                    <div class="timeline-line {% if complaint.status in ['Under Review','Investigating','Resolved','Closed'] %}active{% endif %}"></div>
+                    <div class="timeline-step {% if complaint.status in ['Under Review','Investigating','Resolved','Closed'] %}active{% endif %}">
+                        <div class="step-dot"></div>
+                        <span>Under Review</span>
+                    </div>
+                    <div class="timeline-line {% if complaint.status in ['Investigating','Resolved','Closed'] %}active{% endif %}"></div>
+                    <div class="timeline-step {% if complaint.status in ['Investigating','Resolved','Closed'] %}active{% endif %}">
+                        <div class="step-dot"></div>
+                        <span>Investigating</span>
+                    </div>
+                    <div class="timeline-line {% if complaint.status in ['Resolved','Closed'] %}active{% endif %}"></div>
+                    <div class="timeline-step {% if complaint.status in ['Resolved','Closed'] %}active{% endif %}">
+                        <div class="step-dot"></div>
+                        <span>Resolved</span>
+                    </div>
+                </div>
+                <div class="track-details">
+                    <div class="track-detail"><strong>Filed On:</strong> {{ complaint.created_at.strftime('%d %b %Y, %I:%M %p') }}</div>
+                    <div class="track-detail"><strong>Last Updated:</strong> {{ complaint.updated_at.strftime('%d %b %Y, %I:%M %p') }}</div>
+                    <div class="track-detail"><strong>Priority:</strong> <span class="priority-{{ complaint.priority|lower }}">{{ complaint.priority }}</span></div>
+                    {% if complaint.officer_notes %}
+                    <div class="track-detail"><strong>Officer Notes:</strong> {{ complaint.officer_notes }}</div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}
+{% block scripts %}
+<script>
+function trackCase(e) {
+    e.preventDefault();
+    const caseId = document.getElementById('track-input').value.trim();
+    if (caseId) window.location.href = `/track?case_id=${encodeURIComponent(caseId)}`;
+}
+</script>
+{% endblock %}

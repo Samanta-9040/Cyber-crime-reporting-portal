@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% block title %}Cyber Awareness — CyberSafe India{% endblock %}
+{% block content %}
+<section class="page-section">
+    <div class="page-header">
+        <span class="section-tag"><i class="fas fa-lightbulb"></i> Stay Safe Online</span>
+        <h2 class="section-title">Cyber Awareness Center</h2>
+        <p class="section-desc">Learn how to protect yourself from cyber crimes</p>
+    </div>
+    <div class="awareness-grid" id="awareness-grid">
+        <div class="awareness-card" id="financial">
+            <div class="aw-icon" style="--aw-color:#f59e0b"><i class="fas fa-money-bill-wave"></i></div>
+            <h3>Financial Fraud</h3>
+            <ul>
+                <li>Never share OTP, CVV, or PIN with anyone — banks never ask for these</li>
+                <li>Verify UPI payment requests before accepting</li>
+                <li>Use official banking apps only — avoid third-party links</li>
+                <li>Enable two-factor authentication on all financial accounts</li>
+                <li>Report unauthorized transactions within 24 hours to your bank</li>
+            </ul>
+        </div>
+        <div class="awareness-card" id="cyberbullying">
+            <div class="aw-icon" style="--aw-color:#ef4444"><i class="fas fa-comment-slash"></i></div>
+            <h3>Cyber Bullying</h3>
+            <ul>
+                <li>Screenshot and save all evidence of harassment</li>
+                <li>Block the harasser immediately on all platforms</li>
+                <li>Report to the platform's abuse/safety team</li>
+                <li>Do not respond to trolls — it encourages them</li>
+                <li>Seek support from trusted adults or counselors</li>
+            </ul>
+        </div>
+        <div class="awareness-card" id="hacking">
+            <div class="aw-icon" style="--aw-color:#8b5cf6"><i class="fas fa-user-ninja"></i></div>
+            <h3>Hacking</h3>
+            <ul>
+                <li>Use strong, unique passwords for each account</li>
+                <li>Enable 2FA on email, social media, and banking</li>
+                <li>Keep your OS and apps updated</li>
+                <li>Avoid public WiFi for sensitive transactions</li>
+                <li>Use a reputable antivirus and firewall</li>
+            </ul>
+        </div>
+        <div class="awareness-card" id="socialmedia">
+            <div class="aw-icon" style="--aw-color:#06b6d4"><i class="fas fa-share-nodes"></i></div>
+            <h3>Social Media Safety</h3>
+            <ul>
+                <li>Set profiles to private — limit who can see your info</li>
+                <li>Don't accept friend requests from unknown people</li>
+                <li>Never share personal details like address or ID numbers</li>
+                <li>Be cautious of links shared via DMs</li>
+                <li>Report fake profiles impersonating you immediately</li>
+            </ul>
+        </div>
+        <div class="awareness-card" id="phishing">
+            <div class="aw-icon" style="--aw-color:#10b981"><i class="fas fa-fish"></i></div>
+            <h3>Phishing Protection</h3>
+            <ul>
+                <li>Check the sender's email address carefully for typos</li>
+                <li>Don't click links in suspicious emails or SMS</li>
+                <li>Verify website URLs — look for HTTPS and correct domain</li>
+                <li>Banks and government agencies never ask for passwords via email</li>
+                <li>When in doubt, contact the organization directly</li>
+            </ul>
+        </div>
+        <div class="awareness-card" id="childsafety">
+            <div class="aw-icon" style="--aw-color:#ec4899"><i class="fas fa-child"></i></div>
+            <h3>Child Safety Online</h3>
+            <ul>
+                <li>Monitor children's online activities and set parental controls</li>
+                <li>Teach children not to share personal info online</li>
+                <li>Be aware of signs of online grooming</li>
+                <li>Report any CSAM content immediately to cybertipline</li>
+                <li>Encourage open communication about online experiences</li>
+            </ul>
+        </div>
+    </div>
+</section>
+{% endblock %}

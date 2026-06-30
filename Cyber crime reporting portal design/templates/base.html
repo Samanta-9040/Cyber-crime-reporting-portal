@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="CyberSafe India — National Cyber Crime Reporting Portal. Report cyber crimes securely and confidentially. Emergency Helpline: 1930">
+    <title>{% block title %}CyberSafe India — Cyber Crime Reporting Portal{% endblock %}</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    {% block head %}{% endblock %}
+</head>
+<body>
+    <!-- Three.js 3D Background Canvas -->
+    <canvas id="three-canvas"></canvas>
+
+    <!-- Navigation -->
+    <nav class="navbar" id="main-navbar">
+        <div class="nav-container">
+            <a href="{{ url_for('index') }}" class="nav-brand" id="nav-brand">
+                <div class="brand-icon">
+                    <i class="fas fa-shield-halved"></i>
+                </div>
+                <div class="brand-text">
+                    <span class="brand-name">CyberSafe<span class="brand-accent">India</span></span>
+                    <span class="brand-tagline">National Cyber Crime Portal</span>
+                </div>
+            </a>
+
+            <div class="nav-links" id="nav-links">
+                <a href="{{ url_for('index') }}" class="nav-link" id="nav-home"><i class="fas fa-home"></i> Home</a>
+                <a href="{{ url_for('awareness') }}" class="nav-link" id="nav-awareness"><i class="fas fa-lightbulb"></i> Awareness</a>
+                <a href="{{ url_for('track_case') }}" class="nav-link nav-tracker" id="nav-track"><i class="fas fa-search"></i> Track Case</a>
+                {% if current_user.is_authenticated %}
+                    {% if current_user.role == 'admin' %}
+                        <a href="{{ url_for('admin_dashboard') }}" class="nav-link" id="nav-admin"><i class="fas fa-user-shield"></i> Admin</a>
+                    {% else %}
+                        <a href="{{ url_for('dashboard') }}" class="nav-link" id="nav-dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                    {% endif %}
+                    <a href="{{ url_for('file_complaint') }}" class="nav-link nav-cta" id="nav-report"><i class="fas fa-plus-circle"></i> Report Crime</a>
+                    <a href="{{ url_for('logout') }}" class="nav-link" id="nav-logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                {% else %}
+                    <a href="{{ url_for('login') }}" class="nav-link" id="nav-login"><i class="fas fa-sign-in-alt"></i> Login</a>
+                    <a href="{{ url_for('register') }}" class="nav-link nav-cta" id="nav-register"><i class="fas fa-user-plus"></i> Register</a>
+                {% endif %}
+            </div>
+
+            <div class="nav-emergency" id="nav-emergency">
+                <a href="tel:1930" class="emergency-btn">
+                    <i class="fas fa-phone-alt pulse-icon"></i>
+                    <span>1930</span>
+                </a>
+            </div>
+
+            <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-container" id="flash-container">
+                {% for category, message in messages %}
+                    <div class="flash-message flash-{{ category }}" id="flash-msg-{{ loop.index }}">
+                        <i class="fas {% if category == 'success' %}fa-check-circle{% elif category == 'danger' %}fa-exclamation-circle{% elif category == 'warning' %}fa-exclamation-triangle{% else %}fa-info-circle{% endif %}"></i>
+                        <span>{{ message }}</span>
+                        <button class="flash-close" onclick="this.parentElement.remove()">&times;</button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <!-- Main Content -->
+    <main class="main-content" id="main-content">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer" id="main-footer">
+        <div class="footer-container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="footer-brand">
+                        <i class="fas fa-shield-halved"></i>
+                        <span>CyberSafe<span class="brand-accent">India</span></span>
+                    </div>
+                    <p class="footer-desc">National Cyber Crime Reporting Portal — An initiative by the Ministry of Home Affairs, Government of India.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <a href="{{ url_for('index') }}">Home</a>
+                    <a href="{{ url_for('awareness') }}">Cyber Awareness</a>
+                    <a href="{{ url_for('track_case') }}">Track Case</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Emergency</h4>
+                    <a href="tel:1930"><i class="fas fa-phone"></i> Helpline: 1930</a>
+                    <a href="mailto:report@cybersafe.gov.in"><i class="fas fa-envelope"></i> report@cybersafe.gov.in</a>
+                    <a href="#"><i class="fas fa-clock"></i> 24/7 Available</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Legal</h4>
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">IT Act 2000</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 CyberSafe India. All rights reserved. | Ministry of Home Affairs, Government of India</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="{{ url_for('static', filename='js/three-bg.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

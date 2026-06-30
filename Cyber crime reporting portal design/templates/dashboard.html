@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Dashboard — CyberSafe India{% endblock %}
+{% block content %}
+<section class="page-section">
+    <div class="page-header">
+        <span class="section-tag"><i class="fas fa-tachometer-alt"></i> Dashboard</span>
+        <h2 class="section-title">Welcome, {{ current_user.name }}</h2>
+        <p class="section-desc">Manage your complaints and track case progress</p>
+    </div>
+    <div class="dashboard-actions">
+        <a href="{{ url_for('file_complaint') }}" class="btn btn-primary" id="dash-new-complaint"><i class="fas fa-plus-circle"></i> New Complaint</a>
+    </div>
+    <div class="dashboard-grid" id="dashboard-grid">
+        {% if complaints %}
+            {% for c in complaints %}
+            <div class="case-card" id="dash-case-{{ c.case_id }}">
+                <div class="case-header">
+                    <span class="case-id"><i class="fas fa-hashtag"></i> {{ c.case_id }}</span>
+                    <span class="case-badge badge-{{ c.status|lower|replace(' ', '-') }}">{{ c.status }}</span>
+                </div>
+                <div class="case-body">
+                    <div class="case-category"><i class="fas fa-tag"></i> {{ c.category }}</div>
+                    <p class="case-desc">{{ c.description[:120] }}{% if c.description|length > 120 %}...{% endif %}</p>
+                </div>
+                <div class="case-footer">
+                    <span class="case-date"><i class="fas fa-calendar"></i> {{ c.created_at.strftime('%d %b %Y') }}</span>
+                    <a href="{{ url_for('track_case', case_id=c.case_id) }}" class="btn btn-sm btn-outline">Track</a>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="no-cases"><i class="fas fa-folder-open"></i><p>No complaints filed yet</p>
+                <a href="{{ url_for('file_complaint') }}" class="btn btn-primary">File Your First Complaint</a></div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

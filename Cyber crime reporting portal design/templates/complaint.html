@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}File Complaint — CyberSafe India{% endblock %}
+{% block content %}
+<section class="page-section">
+    <div class="page-header">
+        <span class="section-tag"><i class="fas fa-pen-to-square"></i> New Complaint</span>
+        <h2 class="section-title">File a Cyber Crime Complaint</h2>
+        <p class="section-desc">Provide detailed information to help our officers investigate your case</p>
+    </div>
+    <div class="complaint-form-wrap" id="complaint-form-wrap">
+        <form method="POST" action="{{ url_for('file_complaint') }}" enctype="multipart/form-data" id="complaint-form">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="cf-name"><i class="fas fa-user"></i> Full Name *</label>
+                    <input type="text" id="cf-name" name="name" required value="{{ current_user.name }}">
+                </div>
+                <div class="form-group">
+                    <label for="cf-mobile"><i class="fas fa-phone"></i> Mobile Number *</label>
+                    <input type="tel" id="cf-mobile" name="mobile" required value="{{ current_user.phone }}">
+                </div>
+                <div class="form-group">
+                    <label for="cf-email"><i class="fas fa-envelope"></i> Email</label>
+                    <input type="email" id="cf-email" name="email" value="{{ current_user.email }}">
+                </div>
+                <div class="form-group">
+                    <label for="cf-category"><i class="fas fa-tag"></i> Crime Category *</label>
+                    <select id="cf-category" name="category" required>
+                        <option value="">Select Category</option>
+                        <option value="Financial Fraud">Financial Fraud</option>
+                        <option value="Cyber Bullying">Cyber Bullying</option>
+                        <option value="Hacking">Hacking</option>
+                        <option value="Social Media">Social Media Crime</option>
+                        <option value="Phishing">Phishing</option>
+                        <option value="Child Safety">Child Safety</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="cf-amount"><i class="fas fa-indian-rupee-sign"></i> Amount Lost (₹)</label>
+                    <input type="number" id="cf-amount" name="amount_lost" placeholder="0" min="0">
+                </div>
+                <div class="form-group">
+                    <label for="cf-evidence"><i class="fas fa-paperclip"></i> Upload Evidence</label>
+                    <input type="file" id="cf-evidence" name="evidence" accept=".png,.jpg,.jpeg,.pdf,.doc,.docx,.mp4">
+                    <small>Accepted: Images, PDF, DOC, MP4 (Max 16MB)</small>
+                </div>
+            </div>
+            <div class="form-group form-full">
+                <label for="cf-desc"><i class="fas fa-align-left"></i> Detailed Description *</label>
+                <textarea id="cf-desc" name="description" rows="6" required placeholder="Describe the incident including dates, platforms, amounts, and any details that could help investigation..."></textarea>
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary btn-lg" id="cf-submit">
+                    <i class="fas fa-paper-plane"></i> Submit Complaint
+                </button>
+                <a href="{{ url_for('dashboard') }}" class="btn btn-outline" id="cf-cancel">Cancel</a>
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock %}

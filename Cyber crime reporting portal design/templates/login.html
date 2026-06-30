@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Login — CyberSafe India{% endblock %}
+{% block content %}
+<section class="auth-section">
+    <div class="auth-card" id="login-card">
+        <div class="auth-header">
+            <div class="auth-icon"><i class="fas fa-shield-halved"></i></div>
+            <h2>Welcome Back</h2>
+            <p>Login to your CyberSafe India account</p>
+        </div>
+        <form method="POST" action="{{ url_for('login') }}" id="login-form">
+            <div class="form-group">
+                <label for="login-email"><i class="fas fa-envelope"></i> Email</label>
+                <input type="email" id="login-email" name="email" placeholder="Enter your email" required>
+            </div>
+            <div class="form-group">
+                <label for="login-password"><i class="fas fa-lock"></i> Password</label>
+                <input type="password" id="login-password" name="password" placeholder="Enter your password" required>
+            </div>
+            <button type="submit" class="btn btn-primary btn-full" id="login-submit">
+                <i class="fas fa-sign-in-alt"></i> Login
+            </button>
+        </form>
+        <div class="auth-footer">
+            <p>Don't have an account? <a href="{{ url_for('register') }}">Register here</a></p>
+            <p class="auth-demo">Demo Admin: admin@cybersafe.gov.in / admin123</p>
+        </div>
+    </div>
+</section>
+{% endblock %}
